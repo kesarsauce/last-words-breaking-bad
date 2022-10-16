@@ -75,7 +75,7 @@
   {:else if lost == true}
     <h1>YOU LOST</h1>
   {:else}
-    <h1>Internal Server Error</h1>
+    <h1>Internal Server Error!</h1>
   {/if}
 </main>
 
