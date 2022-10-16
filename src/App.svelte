@@ -1,8 +1,9 @@
 <script>
-  import Countdown from "./lib/Countdown.svelte"
+  import Countdown from "./lib/Countdown.svelte";
   let death = { last_words: "Guess the person who said these last words" };
   let guess = "";
   let won = false;
+  let lost = false;
   let out = [];
 
   async function fetchAllDeaths() {
@@ -47,31 +48,36 @@
 </script>
 
 <main>
-  <div class="top-bar"><span class="timer"><Countdown/></span></div>
-  <h1>{death.last_words}</h1>
+  {#if won == false && lost == false}
+    <div class="top-bar">
+      <span class="timer"><Countdown on:timeout={() => (lost = true)} /></span>
+    </div>
+    <h1>{death.last_words}</h1>
 
-  <div>
-    <button type="button" on:click={getNewDeath} class="btn btn-outline"
-      >New</button
-    >
-  </div>
+    <div>
+      <button type="button" on:click={getNewDeath} class="btn btn-outline"
+        >New</button
+      >
+    </div>
 
-  <div>
-    <input
-      type="search"
-      bind:value={guess}
-      on:input={validateGuess}
-      placeholder="Type here"
-      class="input input-bordered input-info w-full max-w-xs"
-      class:input-success={won}
-    />
-  </div>
+    <div>
+      <input
+        type="search"
+        bind:value={guess}
+        on:input={validateGuess}
+        placeholder="Type here"
+        class="input input-bordered input-info w-full max-w-xs"
+        class:input-success={won}
+      />
+    </div>
+  {:else if won == true}
+    <h2>Correct</h2>
+  {:else if lost == true}
+    <h1>YOU LOST</h1>
+  {:else}
+    <h1>Internal Server Error</h1>
+  {/if}
 </main>
-
-
-{#if won == true}
-  <h2>Correct</h2>
-{/if}
 
 <style>
   main {
